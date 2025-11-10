@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>МотоДиагностика PRO - Профессиональный подбор мотоциклов</title>
+    
+    <!-- PWA мета-теги -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="МотоДиагностика PRO">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#6366F1">
+    <meta name="description" content="Профессиональная диагностика и подбор мотоциклов">
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiM2MzY2RjEiLz4KPHN2ZyB4PSI0OCIgeT0iNDgiIHdpZHRoPSI5NiIgaGVpZ2h0PSI5NiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+CjxwYXRoIGQ9Ik0xMiAxMk0xMiA2TDEyIDE4TTYgMTJIMThaIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiLz4KPC9zdmc+Cjwvc3ZnPgo=">
+    
+    <!-- Подключение CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Шапка -->
+        <header class="app-header">
+            <h1>🏍️ МотоДиагностика PRO</h1>
+            <p>Профессиональный подбор и диагностика мотоциклов</p>
+            <button class="theme-toggle-header" id="themeToggleHeader" aria-label="Переключить тему">🌓</button>
+        </header>
+
+        <!-- Навигация -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="report">
+                <span class="tab-icon">📊</span>
+                <span class="tab-text">Отчет</span>
+            </button>
+            <button class="nav-tab" data-tab="inspections">
+                <span class="tab-icon">📅</span>
+                <span class="tab-text">Проверки</span>
+            </button>
+            <button class="nav-tab" data-tab="database">
+                <span class="tab-icon">🗃️</span>
+                <span class="tab-text">База</span>
+            </button>
+            <button class="nav-tab" data-tab="stats">
+                <span class="tab-icon">📈</span>
+                <span class="tab-text">Статистика</span>
+            </button>
+            <button class="nav-tab" data-tab="settings">
+                <span class="tab-icon">⚙️</span>
+                <span class="tab-text">Настройки</span>
+            </button>
+        </nav>
+
+        <!-- Вкладка ОТЧЕТ -->
+        <div id="report-tab" class="tab-content active">
+            <div class="card">
+                <h2 class="section-title">Создание диагностического отчета</h2>
+                
+                <!-- Индикатор прогресса -->
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">Заполните основные данные</div>
+                </div>
+
+                <!-- Уведомления -->
+                <div class="alert alert-success hidden" id="successAlert"></div>
+                <div class="alert alert-info hidden" id="savingsAlert"></div>
+
+                <form id="diagnosticForm">
+                    <!-- Основные данные -->
+                    <div class="section-title">📋 Основные данные</div>
+                    <div class="card">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="brand">Марка мотоцикла</label>
+                                <select id="brand" name="brand" required>
+                                    <option value="">-- Выберите марку --</option>
+                                    <option value="Yamaha">Yamaha</option>
+                                    <option value="Honda">Honda</option>
+                                    <option value="Kawasaki">Kawasaki</option>
+                                    <option value="Suzuki">Suzuki</option>
+                                    <option value="BMW">BMW</option>
+                                    <option value="KTM">KTM</option>
+                                    <option value="Ducati">Ducati</option>
+                                    <option value="Triumph">Triumph</option>
+                                    <option value="Harley-Davidson">Harley-Davidson</option>
+                                    <option value="Другая марка">Другая марка</option>
+                                </select>
+                                <input type="text" id="brand_custom" name="brand_custom" placeholder="Введите марку" class="hidden mt-10">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="model">Модель</label>
+                                <select id="model" name="model" required>
+                                    <option value="">-- Сначала выберите марку --</option>
+                                </select>
+                                <input type="text" id="model_custom" name="model_custom" placeholder="Введите модель" class="hidden mt-10">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="year">Год выпуска</label>
+                                <input type="number" id="year" name="year" placeholder="2023" min="1990" max="2030" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="mileage">Пробег (тыс. км)</label>
+                                <input type="number" id="mileage" name="mileage" placeholder="15.5" step="0.1" min="0">
+                            </div>
+                        </div>
+
+                        <!-- VIN и гос. номер -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="vin">VIN / Номер рамы</label>
+                                <input type="text" id="vin" name="vin" placeholder="ZAB12345678901234" 
+                                       pattern="[A-HJ-NPR-Z0-9]{17}" 
+                                       title="17-значный VIN номер (только буквы и цифры)">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="license_plate">Гос. номер</label>
+                                <input type="text" id="license_plate" name="license_plate" placeholder="А123БВ77">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="motorcycle_class">Класс мотоцикла</label>
+                                <select id="motorcycle_class" name="motorcycle_class">
+                                    <option value="">-- Выберите класс --</option>
+                                    <option value="Классический">Классический</option>
+                                    <option value="Нейкед">Нейкед</option>
+                                    <option value="Скрэмблер">Скрэмблер</option>
+                                    <option value="Спортбайк">Спортбайк</option>
+                                    <option value="Туристический">Туристический</option>
+                                    <option value="Гипербайк">Гипербайк</option>
+                                    <option value="Турэндуро">Турэндуро</option>
+                                    <option value="Круизер">Круизер</option>
+                                    <option value="Мускулбайк">Мускулбайк</option>
+                                    <option value="Боббер">Боббер</option>
+                                    <option value="Кафе-рейсер">Кафе-рейсер</option>
+                                    <option value="Мотоцикл с коляской">Мотоцикл с коляской</option>
+                                    <option value="Кастом">Кастом</option>
+                                    <option value="Чоппер">Чоппер</option>
+                                    <option value="Мини-байк">Мини-байк</option>
+                                    <option value="Трайк">Трайк</option>
+                                    <option value="Макси-скутер">Макси-скутер</option>
+                                    <option value="Кроссовый">Кроссовый</option>
+                                    <option value="Эндуро">Эндуро</option>
+                                    <option value="Мотард">Мотард</option>
+                                    <option value="Супермото">Супермото</option>
+                                    <option value="Триалбайк">Триалбайк</option>
+                                    <option value="Питбайк">Питбайк</option>
+                                    <option value="Мопед">Мопед</option>
+                                    <option value="Скутер">Скутер</option>
+                                    <option value="Скутеретта">Скутеретта</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="legal_check">Юридическая проверка</label>
+                                <select id="legal_check" name="legal_check">
+                                    <option value="Проведена">✅ Проведена</option>
+                                    <option value="Не проводилась">❌ Не проводилась</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Финансовые данные -->
+                    <div class="section-title">💰 Финансовые данные</div>
+                    <div class="card">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="price">Цена продавца</label>
+                                <input type="text" id="price" name="price" placeholder="350 000 руб">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="objective_cost">Объективная стоимость</label>
+                                <input type="text" id="objective_cost" name="objective_cost" placeholder="320 000 руб">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="seller_discount">Скидка с продавца</label>
+                                <input type="text" id="seller_discount" name="seller_discount" placeholder="15 000 руб">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="investment_cost">Стоимость вложений</label>
+                                <input type="text" id="investment_cost" name="investment_cost" placeholder="5 000 руб">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Диагностика -->
+                    <div class="section-title">🔧 Детальная диагностика</div>
+                    <div class="card">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="appearance_rating">Внешний вид (1-5)</label>
+                                <input type="number" id="appearance_rating" name="appearance_rating" min="1" max="5" placeholder="5">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="engine_rating">Двигатель/КПП (1-5)</label>
+                                <input type="number" id="engine_rating" name="engine_rating" min="1" max="5" placeholder="5">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="electronics_rating">Электрооборудование (1-5)</label>
+                                <input type="number" id="electronics_rating" name="electronics_rating" min="1" max="5" placeholder="4">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="suspension_rating">Подвеска (1-5)</label>
+                                <input type="number" id="suspension_rating" name="suspension_rating" min="1" max="5" placeholder="4">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Выводы и решение -->
+                    <div class="section-title">💡 Выводы и решение</div>
+                    <div class="card">
+                        <div class="form-group">
+                            <label for="key_finding">Ключевая находка</label>
+                            <input type="text" id="key_finding" name="key_finding" placeholder="Отличное состояние двигателя">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="expert_verdict">Экспертный вердикт</label>
+                            <textarea id="expert_verdict" name="expert_verdict" rows="3" placeholder="Профессиональное мнение..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="decision">Решение</label>
+                            <select id="decision" name="decision">
+                                <option value="">-- Выберите решение --</option>
+                                <option value="✅ Куплен">✅ Куплен</option>
+                                <option value="❌ Не Куплен">❌ Не Куплен</option>
+                                <option value="📅 Запланировать проверку">📅 Запланировать проверку</option>
+                            </select>
+                        </div>
+
+                        <!-- Поля для запланированной проверки -->
+                        <div class="inspection-fields hidden" id="inspectionFields">
+                            <div class="section-title" style="font-size: 0.95rem;">📅 Данные для проверки</div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="inspection_date">Дата проверки</label>
+                                    <input type="date" id="inspection_date" name="inspection_date">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inspection_time">Время проверки</label>
+                                    <input type="time" id="inspection_time" name="inspection_time">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inspection_address">Адрес проверки</label>
+                                <input type="text" id="inspection_address" name="inspection_address" placeholder="г. Москва, ул. Примерная, д. 1">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="customer_phone">Телефон заказчика</label>
+                                    <input type="tel" id="customer_phone" name="customer_phone" placeholder="+7 (900) 123-45-67">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="seller_phone">Телефон продавца</label>
+                                    <input type="tel" id="seller_phone" name="seller_phone" placeholder="+7 (900) 765-43-21">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inspection_notes">Дополнительные заметки</label>
+                                <textarea id="inspection_notes" name="inspection_notes" rows="2" placeholder="Особые условия, дополнительные детали..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Кнопки действий -->
+                    <button type="button" class="btn pulse" id="generateBtn">🔄 Сгенерировать отчет</button>
+                    
+                    <div class="form-row mt-10">
+                        <button type="button" class="btn btn-secondary" id="saveToDbBtn">💾 Сохранить в базу</button>
+                        <button type="button" class="btn btn-warning" id="clearFormBtn">🗑️ Очистить форму</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Вывод отчета -->
+            <div class="card hidden" id="outputCard">
+                <div class="section-title">📄 Сгенерированный отчет</div>
+                <div class="output-container" id="output"></div>
+                <button type="button" class="btn btn-success mt-10 hidden" id="copyBtn">📋 Скопировать отчет</button>
+            </div>
+        </div>
+
+        <!-- Вкладка ПРОВЕРКИ -->
+        <div id="inspections-tab" class="tab-content">
+            <div class="card">
+                <h2 class="section-title">📅 Запланированные проверки</h2>
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInspections" placeholder="Поиск по марке, модели или адресу...">
+                </div>
+                <div class="form-row">
+                    <button class="btn btn-secondary" id="exportInspectionsBtn">📤 Экспорт проверок</button>
+                    <button class="btn btn-warning" id="importInspectionsBtn">📥 Импорт проверок</button>
+                </div>
+                <div class="reports-list" id="inspectionsList"></div>
+            </div>
+        </div>
+
+        <!-- Вкладка БАЗА -->
+        <div id="database-tab" class="tab-content">
+            <div class="card">
+                <h2 class="section-title">🗃️ База отчетов</h2>
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchReports" placeholder="Поиск по марке, модели, VIN или году...">
+                </div>
+                <div class="form-row">
+                    <button class="btn btn-secondary" id="exportBtn">📤 Экспорт базы</button>
+                    <button class="btn btn-warning" id="importBtn">📥 Импорт базы</button>
+                </div>
+                <div class="reports-list" id="reportsList"></div>
+            </div>
+        </div>
+
+        <!-- Вкладка СТАТИСТИКА -->
+        <div id="stats-tab" class="tab-content">
+            <div class="card">
+                <h2 class="section-title">📈 Статистика</h2>
+                
+                <div class="grid-buttons">
+                    <button class="grid-btn active" data-period="week">Неделя</button>
+                    <button class="grid-btn" data-period="month">Месяц</button>
+                    <button class="grid-btn" data-period="quarter">Квартал</button>
+                    <button class="grid-btn" data-period="year">Год</button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Всего отчетов</div>
+                        <div class="stat-value" id="totalReports">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Успешных сделок</div>
+                        <div class="stat-value" id="successfulDeals">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Средняя экономия</div>
+                        <div class="stat-value" id="avgSavings">0 ₽</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Популярная марка</div>
+                        <div class="stat-value" id="popularBrand">-</div>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Запланировано проверок</div>
+                        <div class="stat-value" id="plannedInspections">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Выполнено проверок</div>
+                        <div class="stat-value" id="completedInspections">0</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary" id="generateStatsBtn">📊 Сгенерировать пост статистики</button>
+
+                <div class="output-container hidden mt-20" id="statsOutput"></div>
+                <button class="btn btn-success mt-10 hidden" id="copyStatsBtn">📋 Скопировать статистику</button>
+            </div>
+        </div>
+
+        <!-- Вкладка НАСТРОЙКИ -->
+        <div id="settings-tab" class="tab-content">
+            <div class="card">
+                <h2 class="section-title">⚙️ Настройки приложения</h2>
+                
+                <div class="settings-group">
+                    <div class="settings-label">Внешний вид</div>
+                    <div class="settings-description">Настройте тему оформления приложения</div>
+                    
+                    <div class="toggle-container">
+                        <span class="toggle-label">Темная тема</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="darkTheme">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="toggle-container">
+                        <span class="toggle-label">Автосохранение</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="autoSave" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <div class="settings-label">Уведомления</div>
+                    <div class="settings-description">Управление системными уведомлениями</div>
+                    
+                    <div class="toggle-container">
+                        <span class="toggle-label">Звуковые уведомления</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="soundNotifications" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="toggle-container">
+                        <span class="toggle-label">Виброотклик</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="vibration" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="toggle-container">
+                        <span class="toggle-label">Уведомления о проверках</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="inspectionNotifications" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="reminder-input" style="display:flex; align-items:center; gap:10px; margin-top:10px;">
+                        <label class="reminder-label">Напоминать за:</label>
+                        <input type="number" id="reminderTime" name="reminderTime" min="1" max="24" value="2" style="max-width: 80px;">
+                        <span class="reminder-label">часа</span>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <div class="settings-label">Резервные копии</div>
+                    <div class="settings-description">Управление данными приложения</div>
+                    
+                    <div class="form-row">
+                        <button class="btn btn-secondary" id="exportSettingsBtn">💾 Экспорт настроек</button>
+                        <button class="btn btn-warning" id="importSettingsBtn">📥 Импорт настроек</button>
+                    </div>
+                    
+                    <button class="btn btn-danger mt-10" id="clearStorageBtn">🗑️ Очистить все данные</button>
+                </div>
+            </div>
+
+            <div class="card mt-20">
+                <h2 class="section-title">ℹ️ О приложении</h2>
+                <div class="settings-group">
+                    <p><strong>Версия:</strong> 2.4.0 PRO FINAL</p>
+                    <p><strong>Разработчик:</strong> Сергей Ландик</p>
+                    <p><strong>Контакты:</strong> 8 950 005-05-08</p>
+                    <p><strong>Сайт:</strong> motopodbor.ru</p>
+                    <p><strong>Обновлено:</strong> <span id="appVersionDate">2024</span></p>
+                </div>
+                
+                <button class="btn mt-20" id="installBtn" style="display: none;">📲 Установить приложение</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Кнопка "Наверх" -->
+    <button class="scroll-to-top" id="scrollToTopBtn" aria-label="Наверх">↑</button>
+
+    <!-- Модальное окно для просмотра отчета -->
+    <div id="reportModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>📋 Просмотр отчета</h3>
+                <button class="modal-close" onclick="app.modules.report.closeReportModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="report-identifiers">
+                    <div class="identifier-item"><strong>VIN:</strong> <span id="modalVin">Не указан</span></div>
+                    <div class="identifier-item"><strong>Гос. номер:</strong> <span id="modalLicensePlate">Не указан</span></div>
+                    <div class="identifier-item"><strong>Мотоцикл:</strong> <span id="modalBikeInfo">-</span></div>
+                </div>
+                <div class="output-container modal-output" id="modalOutput"></div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="app.modules.report.copyModalReport()">📋 Копировать</button>
+                <button class="btn" onclick="app.modules.report.closeReportModal()">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Индикатор сохранения -->
+    <div class="save-indicator" id="saveIndicator">💾 Сохранено</div>
+
+    <div id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Подключение JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
